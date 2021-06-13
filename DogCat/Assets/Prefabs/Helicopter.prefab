@@ -10,12 +10,13 @@ GameObject:
   m_Component:
   - component: {fileID: 3083460295184996841}
   - component: {fileID: 3083460295184996855}
-  - component: {fileID: 3083460295184996840}
+  - component: {fileID: 6972375561696147514}
+  - component: {fileID: 1433342904477741173}
   - component: {fileID: 3083460295184996854}
   - component: {fileID: -1026770636245907861}
   m_Layer: 0
   m_Name: Helicopter
-  m_TagString: Helicopter
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -73,7 +74,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 2
   m_Sprite: {fileID: -6318484107250585120, guid: eee76e04a2d0ffd4c865984d48178efe, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -85,8 +86,27 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!60 &3083460295184996840
-PolygonCollider2D:
+--- !u!95 &6972375561696147514
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3083460295184996842}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 26b941bf40cbdad4a9be881fc2ce742e, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!61 &1433342904477741173
+BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -108,35 +128,9 @@ PolygonCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Points:
-    m_Paths:
-    - - {x: 0.52, y: 0.19}
-      - {x: 0.45999998, y: 0.34}
-      - {x: 0.37, y: 0.41}
-      - {x: 1.49, y: 0.42}
-      - {x: 1.5, y: 0.42999998}
-      - {x: 1.5, y: 0.48}
-      - {x: 1.4399999, y: 0.5}
-      - {x: 0.87, y: 0.52}
-      - {x: -0.22, y: 0.52}
-      - {x: -0.21, y: 0.51}
-      - {x: -1.24, y: 0.51}
-      - {x: -1.5, y: 0.48999998}
-      - {x: -1.5, y: 0.42}
-      - {x: -1.49, y: 0.42}
-      - {x: -0.19999999, y: 0.41}
-      - {x: -0.38, y: 0.39999998}
-      - {x: -0.41, y: 0.39}
-      - {x: -0.45999998, y: 0.35}
-      - {x: -0.44, y: 0.22}
-      - {x: -0.35, y: -0.29999998}
-      - {x: -0.25, y: -0.37}
-      - {x: 0, y: -0.47}
-      - {x: 0.17, y: -0.52}
-      - {x: 0.39999998, y: -0.52}
-      - {x: 0.56, y: -0.47}
-      - {x: 0.62, y: -0.42}
-      - {x: 0.59999996, y: -0.02}
+  serializedVersion: 2
+  m_Size: {x: 1.21, y: 0.93}
+  m_EdgeRadius: 0
 --- !u!50 &3083460295184996854
 Rigidbody2D:
   serializedVersion: 4
@@ -170,4 +164,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 478dc47a86bf63241867d0db23075e3e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_SoldierRef: {fileID: 3702772580672901212, guid: 7a5e0b18f647e584d90f64fd8b998c6d, type: 3}
+  m_HelicopterExplosionRef: {fileID: 8155176716681240525, guid: 07a306ed99adc7f4db3327953aff9325, type: 3}
+  m_ExplosionRef: {fileID: 2900208249733869705, guid: 1a1582952b850134a90af89a3923628e, type: 3}
   m_fFlyingSpeed: 3

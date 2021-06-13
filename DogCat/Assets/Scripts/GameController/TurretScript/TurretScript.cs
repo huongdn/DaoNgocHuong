@@ -6,19 +6,32 @@ using System;
 
 public class TurretScript : MonoBehaviour
 {
-    public GameObject m_defaultBullet;
+    [SerializeField]
+    private GameObject m_defaultBulletRef;
+
+    [SerializeField]
+    private float m_fFireRate;
+
+    private GameObject m_turretBullet;
+
     private Transform m_defaultBulletTranform;
     private bool m_bIsTurretReloaded;
     private float m_fNextFireTime;
-    public float m_fFireRate;
+
+
+    private void Awake()
+    {
+        m_defaultBulletTranform = m_defaultBulletRef.transform;
+        m_bIsTurretReloaded = false;
+
+        m_fNextFireTime = 0.0f;
+    }
 
     // Start is called before the first frame update
     void Start()
     {
-        m_defaultBulletTranform = m_defaultBullet.transform;
-        m_bIsTurretReloaded = false;
-        
-        m_fNextFireTime = 0.0f;
+        GameObject gameObject1 = Instantiate(m_defaultBulletRef, m_defaultBulletTranform.position, m_defaultBulletTranform.rotation);
+        m_turretBullet = gameObject1;
     }
 
     // Update is called once per frame
@@ -47,17 +60,21 @@ public class TurretScript : MonoBehaviour
             {
                 direction.y = 0;
             }
-
-            m_defaultBullet.transform.up = direction;
+            if(m_turretBullet)
+            {
+            m_turretBullet.transform.up = direction;
+            }
             //Debug.Log("Bullet.transform.up: x:" + Bullet.transform.up.x +" y:" + Bullet.transform.up.y +" z:" +Bullet.transform.up.z);
     }
 
     void _FireBullet()
     {
         m_fNextFireTime = Time.time + m_fFireRate;
-        GameObject FiredBullet = Instantiate(m_defaultBullet, m_defaultBullet.transform.position, m_defaultBullet.transform.rotation);
-        m_defaultBullet.SetActive(false);
+        GameObject FiredBullet = Instantiate(m_defaultBulletRef, m_turretBullet.transform.position, m_turretBullet.transform.rotation);
         FiredBullet.GetComponent<Rigidbody2D>().velocity = FiredBullet.transform.up * 10f;
+        FiredBullet.tag = "FiredBullet";
+
+        m_turretBullet.SetActive(false);
     }
     
     bool _IsTurretReloaded()
@@ -68,7 +85,10 @@ public class TurretScript : MonoBehaviour
         }
         else
         {
-            m_defaultBullet.SetActive(true);
+            if(m_turretBullet)
+            {
+                m_turretBullet.SetActive(true);
+            }
             m_bIsTurretReloaded = true;
         }
         return m_bIsTurretReloaded;

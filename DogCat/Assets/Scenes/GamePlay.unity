@@ -130,6 +130,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1575858392}
     m_Modifications:
+    - target: {fileID: 2011167893372330800, guid: 544b84f9495675a43961ab8276b427ff, type: 3}
+      propertyPath: m_IsTrigger
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2011167893372330805, guid: 544b84f9495675a43961ab8276b427ff, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.7
+      objectReference: {fileID: 0}
     - target: {fileID: 2011167893372330805, guid: 544b84f9495675a43961ab8276b427ff, type: 3}
       propertyPath: m_LocalRotation.w
       value: 1
@@ -198,6 +206,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2011167894529892417, guid: 544b84f9495675a43961ab8276b427ff, type: 3}
+      propertyPath: m_defaultBulletRef
+      value: 
+      objectReference: {fileID: 4773752576920201090, guid: 3effe91dabee5aa43b916bc4cecd393a, type: 3}
     - target: {fileID: 2011167894529892418, guid: 544b84f9495675a43961ab8276b427ff, type: 3}
       propertyPath: m_Name
       value: Turret
@@ -219,9 +231,9 @@ GameObject:
   m_Component:
   - component: {fileID: 520946787}
   - component: {fileID: 520946788}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: GroundEdge
-  m_TagString: Untagged
+  m_TagString: GroundEdge
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -234,7 +246,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 520946786}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -4.73, z: 0}
+  m_LocalPosition: {x: 0, y: -5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1161647908}
@@ -435,7 +447,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b445c4caa4ddf54288116438a8fde01, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Helicopter: {fileID: 3083460295184996842, guid: 3d1aa1df260cba743881ac1dfb9dc376, type: 3}
+  m_HelicopterRef: {fileID: 3083460295184996842, guid: 3d1aa1df260cba743881ac1dfb9dc376, type: 3}
   m_spawnerTime: 2
 --- !u!1 &1161647907
 GameObject:
@@ -448,7 +460,7 @@ GameObject:
   - component: {fileID: 1161647908}
   m_Layer: 0
   m_Name: Edge
-  m_TagString: GroundEdge
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -480,6 +492,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1179470461}
+  - component: {fileID: 1179470462}
+  - component: {fileID: 1179470464}
+  - component: {fileID: 1179470463}
   m_Layer: 0
   m_Name: GameController
   m_TagString: Untagged
@@ -504,6 +519,88 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1179470462
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1179470460}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3a81f434617ff2c42be2fc8bfa67c403, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!95 &1179470463
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1179470460}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 941118c0705e9bc4bbaddd02e10a64eb, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!212 &1179470464
+SpriteRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1179470460}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_Sprite: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_FlipX: 0
+  m_FlipY: 0
+  m_DrawMode: 0
+  m_Size: {x: 3.56, y: 2.08}
+  m_AdaptiveModeThreshold: 0.5
+  m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 0
+  m_MaskInteraction: 0
+  m_SpriteSortPoint: 0
 --- !u!1 &1337607265
 GameObject:
   m_ObjectHideFlags: 0
@@ -607,7 +704,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1788985217
 Transform:
   m_ObjectHideFlags: 0
