@@ -25,5 +25,32 @@ public class DestructableRigidbody : MonoBehaviour
         rigidbody2D = GetComponent<Rigidbody2D>();
         rigidbody2D.AddForce(m_vForceDirection);
         rigidbody2D.AddTorque(randTorque);
+
+        Invoke("_DestroySelft", Random.Range(2.5f, 4f));
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        // Remove Collider2D to make fragments drop under ground
+        if(collision.collider.CompareTag("GroundEdge"))
+        {
+            _RemoveCollider2D();
+        }
+    }
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+    }
+    private void _DestroySelft()
+    {
+        Destroy(gameObject);
+    }
+
+    private void _RemoveCollider2D()
+    {
+        Collider2D collider2D = GetComponent<Collider2D>();
+        if(collider2D)
+        {
+            Destroy(collider2D);
+        }
     }
 }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,27 +8,66 @@ public class SoldierScript : MonoBehaviour
     [SerializeField]
     private float m_fLandingSpeed;
 
-    private bool m_bIsHitted, m_bIsLanded, m_bIsCrashing, m_bIsAddedRigidbody2D;
-    //private Rigidbody2D m_rigidbody2D;
-    // Start is called before the first frame update
+    [SerializeField]
+    private GameObject m_deadSoldierRef;
+
+    private Vector2 m_vBulletForce/*, m_vCollisionContactPos*/;
+
+    private bool m_bIsHitted, m_bIsLanded;
+
+    GameObject m_deadSoldier;
+
+    [SerializeField]
+    private float m_fForceValue;
+
     void Start()
     {
         m_bIsHitted = false;
         m_bIsLanded = false;
-        m_bIsCrashing = false;
-        m_bIsAddedRigidbody2D = false;
-        //m_rigidbody2D.mass = 1;
-        //m_rigidbody2D.gravityScale = 1;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(!_IsHitted())
+        // Soldier landing
+        if(!_IsHitted() && !_IsLanded())
         {
             _SoldierLanding();
         }
-        //_CheckSoldierState();
+
+        // Destroy soldier if hitted by bullet
+        if(_IsHitted())
+        {
+            _DestroySoldier();
+        }
+
+        // Make Soldier go to base after landed
+        if(_IsLanded())
+        {
+            _MoveToBase();
+        }
+    }
+
+    private void _MoveToBase()
+    {
+        throw new NotImplementedException();
+    }
+
+    private void _DestroySoldier()
+    {
+        m_deadSoldier = Instantiate<GameObject>(m_deadSoldierRef);
+
+        //GameObject explosion = Instantiate<GameObject>(m_ExplosionRef);
+
+        //Map the deadSoldier to the Soldier
+        m_deadSoldier.transform.position = transform.position;
+
+        // Add force to deadSoldier
+        Rigidbody2D deadSoldierRigidbody = m_deadSoldier.GetComponent<Rigidbody2D>();
+        deadSoldierRigidbody.AddForce(m_vBulletForce * m_fForceValue);
+        //deadSoldierRigidbody.AddForceAtPosition(m_vBulletForce * m_fForceValue, m_vCollisionContactPos);
+
+        Destroy(gameObject);
     }
 
     void _SoldierLanding()
@@ -39,25 +79,21 @@ public class SoldierScript : MonoBehaviour
         transform.position = tempPos;
     }
 
-    void _CheckSoldierState()
-    {
-        if (_IsHitted() && !m_bIsAddedRigidbody2D)
-        {
-            _AddRigidbody();
-            m_bIsAddedRigidbody2D = true;
-        }
-    }
-
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.tag == "FiredBullet" && !_IsHitted())
         {
             m_bIsHitted = true;
-            Rigidbody2D gameObjectsRigidBody = gameObject.AddComponent<Rigidbody2D>(); // Add the rigidbody.
-            Vector2 force;
-            force.x = 1;
-            force.y = 2;
-            gameObjectsRigidBody.AddForce(force);
+            //m_vBulletForce.x = collision.gameObject.transform.position.x;
+            //m_vBulletForce.y = collision.gameObject.transform.position.y;
+
+            m_vBulletForce = collision.gameObject.transform.up;
+
+            //Try to get collision point
+            //m_vCollisionContactPos = collision.gameObject.GetComponent<Collider2D>().ClosestPoint(transform.position);
+
+            //Debug.Log("m_vCollisionContactPos:" + m_vCollisionContactPos.x + " " + m_vCollisionContactPos.y);
+            //Debug.Log("m_vBulletForce:" + m_vBulletForce.x + " " + m_vBulletForce.y);
         }
 
         if (collision.tag == "GroundEdge")
@@ -66,15 +102,6 @@ public class SoldierScript : MonoBehaviour
             {
                 m_bIsLanded = true;
             }
-            else
-            {
-                m_bIsCrashing = true;
-            }
-        }
-
-        if (collision.tag == "SideEdge")
-        {
-            m_bIsCrashing = true;
         }
     }
 
@@ -85,24 +112,5 @@ public class SoldierScript : MonoBehaviour
     bool _IsLanded()
     {
         return m_bIsLanded;
-    }   
-    bool _IsCrashing()
-    {
-        return m_bIsCrashing;
-    }   
-
-    void _AddRigidbody()
-    {
-        //Rigidbody2D gameObjectsRigidBody = gameObject.AddComponent<Rigidbody2D>(); // Add the rigidbody.
-        //Rigidbody2D temp = gameObject.GetComponent<Rigidbody2D>();
-        //temp.mass = 1;
-
-        //gameObjectsRigidBody.mass = 1; // Set the mass via the Rigidbody.
-        //gameObjectsRigidBody.gravityScale = 1;
-    }
-
-    void _RemoveRigidbody()
-    {
-        Destroy(GetComponent<Rigidbody2D>());
     }
 }
