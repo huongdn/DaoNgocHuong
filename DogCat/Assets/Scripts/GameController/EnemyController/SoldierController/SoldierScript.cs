@@ -9,28 +9,37 @@ public class SoldierScript : MonoBehaviour
     private float m_fLandingSpeed;
 
     [SerializeField]
+    private float m_fMovingSpeed;
+
+    [SerializeField]
     private GameObject m_deadSoldierRef;
 
     private Vector2 m_vBulletForce/*, m_vCollisionContactPos*/;
 
-    private bool m_bIsHitted, m_bIsLanded;
+    private bool m_bIsHitted, m_bIsLanded, m_bIsReachedBase;
 
     GameObject m_deadSoldier;
 
     [SerializeField]
     private float m_fForceValue;
 
+    private Animator m_SoldierAnimator;
+
     void Start()
     {
+        m_SoldierAnimator = GetComponent<Animator>();
+        _AnimatorSetIsLanded(false);
+
         m_bIsHitted = false;
         m_bIsLanded = false;
+        m_bIsReachedBase = false;
     }
 
     // Update is called once per frame
     void Update()
     {
         // Soldier landing
-        if(!_IsHitted() && !_IsLanded())
+        if(!_IsHitted() && !_IsLanded() && !_IsReachedBase())
         {
             _SoldierLanding();
         }
@@ -39,25 +48,61 @@ public class SoldierScript : MonoBehaviour
         if(_IsHitted())
         {
             _DestroySoldier();
+            if(GameController.m_sInstance)
+            {
+                GameController.m_sInstance._IncreaseScore();
+            }
         }
 
         // Make Soldier go to base after landed
-        if(_IsLanded())
+        if(_IsLanded() && !_IsReachedBase())
         {
             _MoveToBase();
+        }
+        
+        if(_IsReachedBase())
+        {
+            if(GameController.m_sInstance)
+            {
+                GameController.m_sInstance._StopGamePlay();
+            }
         }
     }
 
     private void _MoveToBase()
     {
-        throw new NotImplementedException();
+        //Debug.Log("_MoveToBase");
+        // Change animation to running
+        _AnimatorSetIsLanded(true);
+
+        Vector3 tempPos = transform.position;
+
+        // Base pos x = 0, Soldier pos x is going to 0
+        // Calculate relative pos of solder to base: -1 if pos.x < base.pos.x; 1 if pos.x > base.pos.x
+        float relativePositionSolBase = ((0f - tempPos.x) / Mathf.Abs(0f - tempPos.x));
+        tempPos.x += relativePositionSolBase * m_fLandingSpeed * Time.deltaTime;
+
+        transform.position = tempPos;
+
+        // Make Soldier face to Base
+        Quaternion tempSolRotation = transform.rotation;
+        tempSolRotation.y = (relativePositionSolBase - 1) / 2;
+
+        transform.rotation = tempSolRotation;
+    }
+
+    private void _AnimatorSetIsLanded(bool isLanded)
+    {
+        if(m_SoldierAnimator)
+        {
+            m_SoldierAnimator.SetBool("IsLanded", isLanded);
+        }
     }
 
     private void _DestroySoldier()
     {
+        // Destroy Soldier animation
         m_deadSoldier = Instantiate<GameObject>(m_deadSoldierRef);
-
-        //GameObject explosion = Instantiate<GameObject>(m_ExplosionRef);
 
         //Map the deadSoldier to the Soldier
         m_deadSoldier.transform.position = transform.position;
@@ -67,6 +112,7 @@ public class SoldierScript : MonoBehaviour
         deadSoldierRigidbody.AddForce(m_vBulletForce * m_fForceValue);
         //deadSoldierRigidbody.AddForceAtPosition(m_vBulletForce * m_fForceValue, m_vCollisionContactPos);
 
+        // Destroy Soldier
         Destroy(gameObject);
     }
 
@@ -103,6 +149,14 @@ public class SoldierScript : MonoBehaviour
                 m_bIsLanded = true;
             }
         }
+
+        if (collision.tag == "Player")
+        { 
+            if (!m_bIsHitted)
+            {
+                m_bIsReachedBase = true;
+            }
+        }
     }
 
     bool _IsHitted()
@@ -112,5 +166,10 @@ public class SoldierScript : MonoBehaviour
     bool _IsLanded()
     {
         return m_bIsLanded;
+    }
+    
+    bool _IsReachedBase()
+    {
+        return m_bIsReachedBase;
     }
 }
