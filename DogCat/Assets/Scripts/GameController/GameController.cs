@@ -20,7 +20,7 @@ public class GameController : MonoBehaviour
         m_fWorldHeight = Camera.main.orthographicSize; // Camera Height
         m_fWorldWidth = m_fWorldHeight * Screen.width / Screen.height; // Camera Width
 
-        _StopGamePlay();
+        _StartGamePlay();
     }
 
     public void _StopGamePlay()
@@ -40,7 +40,7 @@ public class GameController : MonoBehaviour
     }
     private void Start()
     {
-        _StartGamePlay();
+        //_StartGamePlay();
     }
     // Update is called once per frame
     void Update()
