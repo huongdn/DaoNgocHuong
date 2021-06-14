@@ -18,6 +18,7 @@ public class TurretScript : MonoBehaviour
     private bool m_bIsTurretReloaded;
     private float m_fNextFireTime;
 
+    //private BulletScript m_bulletScript;
 
     private void Awake()
     {
@@ -73,6 +74,7 @@ public class TurretScript : MonoBehaviour
         GameObject FiredBullet = Instantiate(m_defaultBulletRef, m_turretBullet.transform.position, m_turretBullet.transform.rotation);
         FiredBullet.GetComponent<Rigidbody2D>().velocity = FiredBullet.transform.up * 10f;
         FiredBullet.tag = "FiredBullet";
+        //FiredBullet.GetComponent<BulletScript>()._EnableParticalSystem();
 
         m_turretBullet.SetActive(false);
     }

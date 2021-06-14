@@ -10,6 +10,7 @@ TagManager:
   - Soldier
   - Helicopter
   - FiredBullet
+  - BulletParticalSystem
   layers:
   - Default
   - TransparentFX

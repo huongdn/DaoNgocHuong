@@ -96,7 +96,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 67c50895ca7aed947b9b4d5de5053325, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_defaultBulletRef: {fileID: 0}
+  m_defaultBulletRef: {fileID: 4773752576920201090, guid: 3effe91dabee5aa43b916bc4cecd393a, type: 3}
   m_fFireRate: 0.5
 --- !u!70 &948057362726723777
 CapsuleCollider2D:
