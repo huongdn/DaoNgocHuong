@@ -129,7 +129,7 @@ PolygonCollider2D:
   m_GameObject: {fileID: 705958298230228798}
   m_Enabled: 1
   m_Density: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: efe56362a98f1624f905d499f1755df2, type: 2}
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
@@ -281,7 +281,7 @@ PolygonCollider2D:
   m_GameObject: {fileID: 5050652677833692897}
   m_Enabled: 1
   m_Density: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: efe56362a98f1624f905d499f1755df2, type: 2}
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
@@ -434,7 +434,7 @@ PolygonCollider2D:
   m_GameObject: {fileID: 5380690934753447415}
   m_Enabled: 1
   m_Density: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: efe56362a98f1624f905d499f1755df2, type: 2}
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
@@ -586,7 +586,7 @@ PolygonCollider2D:
   m_GameObject: {fileID: 5864221255302898511}
   m_Enabled: 1
   m_Density: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: efe56362a98f1624f905d499f1755df2, type: 2}
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
@@ -739,7 +739,7 @@ PolygonCollider2D:
   m_GameObject: {fileID: 6255281302129712226}
   m_Enabled: 1
   m_Density: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: efe56362a98f1624f905d499f1755df2, type: 2}
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
@@ -890,7 +890,7 @@ PolygonCollider2D:
   m_GameObject: {fileID: 6796921532712219697}
   m_Enabled: 1
   m_Density: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: efe56362a98f1624f905d499f1755df2, type: 2}
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
@@ -1045,7 +1045,7 @@ PolygonCollider2D:
   m_GameObject: {fileID: 7263414432831421118}
   m_Enabled: 1
   m_Density: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: efe56362a98f1624f905d499f1755df2, type: 2}
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
@@ -1195,7 +1195,7 @@ PolygonCollider2D:
   m_GameObject: {fileID: 7857197712357624280}
   m_Enabled: 1
   m_Density: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: efe56362a98f1624f905d499f1755df2, type: 2}
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
