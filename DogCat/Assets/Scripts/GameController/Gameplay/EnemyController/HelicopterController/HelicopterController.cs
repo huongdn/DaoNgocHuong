@@ -10,22 +10,39 @@ public class HelicopterController : MonoBehaviour
     [SerializeField]
     private float m_spawnerTime;
 
-
+    private bool m_IsStartSpawnHelicopter;
     // Start is called before the first frame update
     void Start()
     {
-        Quaternion leftIdentity = Quaternion.identity;
-        Quaternion rightIdentity = leftIdentity;
-        rightIdentity.y = 180;
+        //Quaternion leftIdentity = Quaternion.identity;
+        //Quaternion rightIdentity = leftIdentity;
+        //rightIdentity.y = 180;
 
-        StartCoroutine(_SpawnHelicopter(/*worldHeight, worldWidth,*/ leftIdentity, rightIdentity));        
+        //StartCoroutine(_SpawnHelicopter(/*worldHeight, worldWidth,*/ leftIdentity, rightIdentity));
+        m_IsStartSpawnHelicopter = false;
+    }
+
+    private void Update()
+    {
+        if (GameController.m_sInstance)
+        {
+            if (GameController.m_sInstance._IsGameplayStarted() && !m_IsStartSpawnHelicopter)
+            {
+                Quaternion leftIdentity = Quaternion.identity;
+                Quaternion rightIdentity = leftIdentity;
+                rightIdentity.y = 180;
+
+                StartCoroutine(_SpawnHelicopter(/*worldHeight, worldWidth,*/ leftIdentity, rightIdentity));
+                m_IsStartSpawnHelicopter = true;
+            }
+        }
     }
 
     IEnumerator _SpawnHelicopter(/*float worldHeight, float worldWidth,*/ Quaternion leftIdentity, Quaternion rightIdentity)
     {
         if (GameController.m_sInstance)
         {
-            if(GameController.m_sInstance._IsGamePlayStarted())
+            if(GameController.m_sInstance._IsGameplayStarted())
             {
                 yield return new WaitForSeconds(m_spawnerTime);
 

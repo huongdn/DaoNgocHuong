@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameController : MonoBehaviour
 {
@@ -9,9 +10,11 @@ public class GameController : MonoBehaviour
 
     public static float m_fWorldWidth, m_fWorldHeight;
 
-    public static bool m_bIsGamePlaySarted;
+    public static int m_bGameplayState; // Store game state: Start = 0, GamePlay = 1, Result = 2
 
     public static int m_iScore;
+
+    private static bool m_bIsStartedNewGame;
 
     private void Awake()
     {
@@ -20,33 +23,72 @@ public class GameController : MonoBehaviour
         m_fWorldHeight = Camera.main.orthographicSize; // Camera Height
         m_fWorldWidth = m_fWorldHeight * Screen.width / Screen.height; // Camera Width
 
-        _StartGamePlay();
+        m_bGameplayState = 0;
+        _StartNewgame();
     }
 
-    public void _StopGamePlay()
+    public void _StartGameplay()
     {
-        m_bIsGamePlaySarted = false;
-    }
-
-    public void _StartGamePlay()
-    {
-        m_bIsGamePlaySarted = true;
+        m_bGameplayState = 1;
         m_iScore = 0;
+        m_bIsStartedNewGame = false;
     }
 
-    public bool _IsGamePlayStarted()
+    public void _StartNewgame()
     {
-        return m_bIsGamePlaySarted;
+        m_bIsStartedNewGame = true;
     }
+
+    public bool _IsStartedNewGame()
+    {
+        return m_bIsStartedNewGame;
+    }
+    public void _StopGameplay()
+    {
+        m_bGameplayState = 2;
+        if(UIController.m_sInstance)
+        {
+            UIController.m_sInstance._ShowEndGameUI();
+        }
+    }     
+    public void _StartMenu()
+    {
+        m_bGameplayState = 0;
+    }
+
+    public void _SetGameplayState(int state)
+    {
+        m_bGameplayState = state;
+    }
+
+    public int _GetScore()
+    {
+        return m_iScore;
+    }
+
+    public bool _IsGameplayStarted()
+    {
+        return m_bGameplayState == 1;
+    }
+    
+    public bool _IsEndGameplay()
+    {
+        return m_bGameplayState == 2;
+    }
+     public bool _IsStartMenu()
+    {
+        return m_bGameplayState == 0;
+    }
+
+
     private void Start()
     {
-        //_StartGamePlay();
     }
+
     // Update is called once per frame
     void Update()
     {
-        
-    }
+    }    
 
     void _MakeInstance()
     {

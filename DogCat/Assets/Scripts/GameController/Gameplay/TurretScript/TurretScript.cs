@@ -38,17 +38,20 @@ public class TurretScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(_IsTurretReloaded())
+        if(GameController.m_sInstance && GameController.m_sInstance._IsGameplayStarted())
         {
-            //Set Bullet direction
-            _SetbulletDirection();
-
-            //Check fire event - mouse button left down
-            if (Input.GetMouseButtonDown(0))
+            if(_IsTurretReloaded())
             {
-                _FireBullet();
-            }
-        }        
+                //Set Bullet direction
+                _SetbulletDirection();
+
+                //Check fire event - mouse button left down
+                if (Input.GetMouseButtonDown(0))
+                {
+                    _FireBullet();
+                }
+            }        
+        }
     }
     
     void _SetbulletDirection()

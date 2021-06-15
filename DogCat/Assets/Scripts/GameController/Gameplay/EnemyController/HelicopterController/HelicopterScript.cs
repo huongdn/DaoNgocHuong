@@ -32,6 +32,15 @@ public class HelicopterScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //// Destroy remain Soldier when new game start
+        //if (GameController.m_sInstance)
+        //{
+        //    if (GameController.m_sInstance._IsStartedNewGame())
+        //    {
+        //        Destroy(gameObject);
+        //    }
+        //}
+
         _HelicopterFly();
         if ( (transform.position.x <= m_fDropPos && _IsRotaionLeft()) || (transform.position.x >= m_fDropPos && !_IsRotaionLeft()))
         {
