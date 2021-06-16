@@ -18,6 +18,9 @@ public class HelicopterScript : MonoBehaviour
 
     private bool m_bIsSoldierDropped;
 
+    [SerializeField]
+    private AudioSource m_HelicopterHittedSFXRef;
+
     private float m_fDropPos;
     // Start is called before the first frame update
     void Start()
@@ -25,23 +28,17 @@ public class HelicopterScript : MonoBehaviour
         m_bIsSoldierDropped = false;
         if(GameController.m_sInstance)
         {
-            m_fDropPos = Random.Range(-GameController.m_sInstance._GetWorldWidth(), GameController.m_sInstance._GetWorldWidth());
+            m_fDropPos = Random.Range(-GameController.m_sInstance._GetWorldWidth() * 0.9f, GameController.m_sInstance._GetWorldWidth() * 0.9f);
         }
+
+        m_HelicopterHittedSFXRef = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        //// Destroy remain Soldier when new game start
-        //if (GameController.m_sInstance)
-        //{
-        //    if (GameController.m_sInstance._IsStartedNewGame())
-        //    {
-        //        Destroy(gameObject);
-        //    }
-        //}
-
         _HelicopterFly();
+
         if ( (transform.position.x <= m_fDropPos && _IsRotaionLeft()) || (transform.position.x >= m_fDropPos && !_IsRotaionLeft()))
         {
             _DropSoldier();
@@ -66,10 +63,6 @@ public class HelicopterScript : MonoBehaviour
 
     bool _IsRotaionLeft()
     {
-        //Debug.Log("Quaternion.identity.x:" + Quaternion.identity.x + " Quaternion.identity.y:" + Quaternion.identity.y + " Quaternion.identity.z:" + Quaternion.identity.z);
-        //Debug.Log("transform.rotation.x:" + transform.rotation.x + " transform.rotation.y:" + transform.rotation.y + " transform.rotation.z:" + transform.rotation.z);
-        //transform.rotation.x
-        //Debug.Log("Mathf.Round( transform.rotation.y):" + Mathf.Round(transform.rotation.y));
         if (Mathf.Round( transform.rotation.y) == 1)
         {
             return true;
@@ -79,11 +72,26 @@ public class HelicopterScript : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if(other.tag =="FiredBullet" || other.tag == "SideEdge")
+        if(other.tag =="FiredBullet" )
+        {
+            //SFX
+            _HelicopterHittedSFX();
+
+            _ExplodeHelicopter();
+        }
+
+        if (other.tag == "SideEdge")
         {
             _ExplodeHelicopter();
         }
     }
+
+    private void _HelicopterHittedSFX()
+    {
+        m_HelicopterHittedSFXRef.transform.position = transform.position;
+        m_HelicopterHittedSFXRef.Play();
+    }
+
     void _ExplodeHelicopter()
     {
         GameObject helicopterFragments = Instantiate<GameObject>(m_HelicopterExplosionRef);
@@ -97,7 +105,10 @@ public class HelicopterScript : MonoBehaviour
         //Map the explosion to the Helicopter
         explosion.transform.position = transform.position;
 
-        Destroy(gameObject);
+        // Hide Helicopter for finshing play sound
+        gameObject.GetComponent<Renderer>().enabled = false;
+        // Destroy  Helicopter after finshed play sound
+        Destroy(gameObject, m_HelicopterHittedSFXRef.clip.length);
     }
 
     void _DropSoldier()

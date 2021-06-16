@@ -10,41 +10,39 @@ public class HelicopterController : MonoBehaviour
     [SerializeField]
     private float m_spawnerTime;
 
-    private bool m_IsStartSpawnHelicopter;
+    private float m_nextSpawnTime;
+
+    private bool m_canNextHelicopterSpawned;
+
     // Start is called before the first frame update
     void Start()
     {
-        //Quaternion leftIdentity = Quaternion.identity;
-        //Quaternion rightIdentity = leftIdentity;
-        //rightIdentity.y = 180;
-
-        //StartCoroutine(_SpawnHelicopter(/*worldHeight, worldWidth,*/ leftIdentity, rightIdentity));
-        m_IsStartSpawnHelicopter = false;
+        m_canNextHelicopterSpawned = false;
+        m_nextSpawnTime = 0f;
     }
 
     private void Update()
     {
         if (GameController.m_sInstance)
         {
-            if (GameController.m_sInstance._IsGameplayStarted() && !m_IsStartSpawnHelicopter)
+            if (GameController.m_sInstance._IsGameplayStarted() && _CanNextHelicopterSpawn())
             {
                 Quaternion leftIdentity = Quaternion.identity;
                 Quaternion rightIdentity = leftIdentity;
                 rightIdentity.y = 180;
 
-                StartCoroutine(_SpawnHelicopter(/*worldHeight, worldWidth,*/ leftIdentity, rightIdentity));
-                m_IsStartSpawnHelicopter = true;
+                _SpawnHelicopter(/*worldHeight, worldWidth,*/ leftIdentity, rightIdentity);                
             }
         }
     }
-
-    IEnumerator _SpawnHelicopter(/*float worldHeight, float worldWidth,*/ Quaternion leftIdentity, Quaternion rightIdentity)
+    
+    void _SpawnHelicopter(/*float worldHeight, float worldWidth,*/ Quaternion leftIdentity, Quaternion rightIdentity)
     {
         if (GameController.m_sInstance)
         {
             if(GameController.m_sInstance._IsGameplayStarted())
             {
-                yield return new WaitForSeconds(m_spawnerTime);
+                m_nextSpawnTime = Time.time + m_spawnerTime;
 
                 Vector2 leftPos = new Vector2(-GameController.m_sInstance._GetWorldWidth(), GameController.m_sInstance._GetWorldHeight());
                 Vector2 rightPos = new Vector2(GameController.m_sInstance._GetWorldWidth(), GameController.m_sInstance._GetWorldHeight());
@@ -64,9 +62,20 @@ public class HelicopterController : MonoBehaviour
                     //Debug.Log("rightPos.y:" + rightPos.y);
                     Instantiate(m_HelicopterRef, rightPos, rightIdentity);
                 }
-
-                StartCoroutine(_SpawnHelicopter(/*worldHeight, worldWidth,*/ leftIdentity, rightIdentity));
             }
         }
+    }
+
+    bool _CanNextHelicopterSpawn()
+    {
+        if ((Time.time < m_nextSpawnTime))
+        {
+            m_canNextHelicopterSpawned = false;
+        }
+        else
+        {
+            m_canNextHelicopterSpawned = true;
+        }
+        return m_canNextHelicopterSpawned;
     }
 }

@@ -6,6 +6,7 @@ using System;
 
 public class TurretScript : MonoBehaviour
 {
+    private const string FIREBUTTON = "Fire1";
     [SerializeField]
     private GameObject m_defaultBulletRef;
 
@@ -18,6 +19,7 @@ public class TurretScript : MonoBehaviour
     private bool m_bIsTurretReloaded;
     private float m_fNextFireTime;
 
+    AudioSource m_firedBulletSFXRef;
     //private BulletScript m_bulletScript;
 
     private void Awake()
@@ -33,6 +35,8 @@ public class TurretScript : MonoBehaviour
     {
         GameObject gameObject1 = Instantiate(m_defaultBulletRef, m_defaultBulletTranform.position, m_defaultBulletTranform.rotation);
         m_turretBullet = gameObject1;
+
+        m_firedBulletSFXRef = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -46,7 +50,7 @@ public class TurretScript : MonoBehaviour
                 _SetbulletDirection();
 
                 //Check fire event - mouse button left down
-                if (Input.GetMouseButtonDown(0))
+                if (Input.GetButton(FIREBUTTON))
                 {
                     _FireBullet();
                 }
@@ -66,7 +70,7 @@ public class TurretScript : MonoBehaviour
             }
             if(m_turretBullet)
             {
-            m_turretBullet.transform.up = direction;
+                m_turretBullet.transform.up = direction;
             }
             //Debug.Log("Bullet.transform.up: x:" + Bullet.transform.up.x +" y:" + Bullet.transform.up.y +" z:" +Bullet.transform.up.z);
     }
@@ -79,6 +83,7 @@ public class TurretScript : MonoBehaviour
         FiredBullet.tag = "FiredBullet";
         //FiredBullet.GetComponent<BulletScript>()._EnableParticalSystem();
 
+        m_firedBulletSFXRef.PlayOneShot(m_firedBulletSFXRef.clip, 1f);
         m_turretBullet.SetActive(false);
     }
     

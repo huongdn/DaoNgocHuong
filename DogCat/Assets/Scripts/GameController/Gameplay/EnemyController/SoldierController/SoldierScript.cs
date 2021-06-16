@@ -25,6 +25,8 @@ public class SoldierScript : MonoBehaviour
 
     private Animator m_SoldierAnimator;
 
+    public AudioSource m_SoldiderDeadSFXRef;
+
     void Start()
     {
         m_SoldierAnimator = GetComponent<Animator>();
@@ -33,6 +35,8 @@ public class SoldierScript : MonoBehaviour
         m_bIsHitted = false;
         m_bIsLanded = false;
         m_bIsReachedBase = false;
+
+        m_SoldiderDeadSFXRef = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -53,34 +57,27 @@ public class SoldierScript : MonoBehaviour
             _SoldierLanding();
         }
 
-        // Destroy soldier if hitted by bullet
         if(_IsHitted())
         {
-            _DestroySoldier();
-            if(GameController.m_sInstance)
-            {
-                GameController.m_sInstance._IncreaseScore();
-            }
+            
         }
 
         // Make Soldier go to base after landed
-        if(_IsLanded() && !_IsReachedBase())
+        if (_IsLanded() && !_IsReachedBase())
         {
             _MoveToBase();
         }
         
         if(_IsReachedBase())
         {
-            _DestroySoldier();
-
-            if(GameController.m_sInstance)
-            {
-                if(GameController.m_sInstance._IsGameplayStarted())
-                {
-                    GameController.m_sInstance._StopGameplay();
-                }
-            }
+            
         }
+    }
+
+    private void _SoldierHittedSFX()
+    {
+        m_SoldiderDeadSFXRef.transform.position = transform.position;
+        m_SoldiderDeadSFXRef.PlayOneShot(m_SoldiderDeadSFXRef.clip, 1.0f);
     }
 
     private void _MoveToBase()
@@ -126,8 +123,11 @@ public class SoldierScript : MonoBehaviour
         deadSoldierRigidbody.AddForce(m_vBulletForce * m_fForceValue);
         //deadSoldierRigidbody.AddForceAtPosition(m_vBulletForce * m_fForceValue, m_vCollisionContactPos);
 
-        // Destroy Soldier
-        Destroy(gameObject);
+        // Hide gameobject but still active it.
+        gameObject.GetComponent<Renderer>().enabled = false;
+
+        // Destroy after played sound
+        Destroy(gameObject, m_SoldiderDeadSFXRef.clip.length);
     }
 
     void _SoldierLanding()
@@ -154,11 +154,22 @@ public class SoldierScript : MonoBehaviour
 
             //Debug.Log("m_vCollisionContactPos:" + m_vCollisionContactPos.x + " " + m_vCollisionContactPos.y);
             //Debug.Log("m_vBulletForce:" + m_vBulletForce.x + " " + m_vBulletForce.y);
+            if (GameController.m_sInstance)
+            {
+                GameController.m_sInstance._IncreaseScore();
+            }
+
+            ////SFX
+            _SoldierHittedSFX();
+
+            //m_SoldiderDeadSFXRef.PlayOneShot(m_SoldiderDeadSFXRef.clip, 1f);
+            _DestroySoldier();
+
         }
 
         if (collision.tag == "GroundEdge")
         { 
-            if (!m_bIsHitted)
+            if (!_IsHitted())
             {
                 m_bIsLanded = true;
             }
@@ -166,9 +177,19 @@ public class SoldierScript : MonoBehaviour
 
         if (collision.tag == "Player")
         { 
-            if (!m_bIsHitted)
+            if (!_IsHitted())
             {
                 m_bIsReachedBase = true;
+
+                _DestroySoldier();
+
+                if (GameController.m_sInstance)
+                {
+                    if (GameController.m_sInstance._IsGameplayStarted())
+                    {
+                        GameController.m_sInstance._StopGameplay();
+                    }
+                }
             }
         }
     }

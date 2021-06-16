@@ -32,6 +32,7 @@ public class GameController : MonoBehaviour
         m_bGameplayState = 1;
         m_iScore = 0;
         m_bIsStartedNewGame = false;
+
     }
 
     public void _StartNewgame()
