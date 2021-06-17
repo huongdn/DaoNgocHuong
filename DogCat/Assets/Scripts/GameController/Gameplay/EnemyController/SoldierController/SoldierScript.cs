@@ -42,15 +42,7 @@ public class SoldierScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //// Destroy remain Soldier when new game start
-        //if (GameController.m_sInstance)
-        //{
-        //    if(GameController.m_sInstance._IsStartedNewGame())
-        //    {
-        //        Destroy(gameObject);
-        //    }
-        //}
-
+  
         // Soldier landing
         if (!_IsHitted() && !_IsLanded() && !_IsReachedBase())
         {

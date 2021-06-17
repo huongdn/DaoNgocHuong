@@ -72,7 +72,7 @@ public class GameController : MonoBehaviour
         return m_bGameplayState == 1;
     }
     
-    public bool _IsEndGameplay()
+    public bool _IsEndGameMenu()
     {
         return m_bGameplayState == 2;
     }

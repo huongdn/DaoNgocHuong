@@ -20,7 +20,9 @@ public class TurretScript : MonoBehaviour
     private float m_fNextFireTime;
 
     AudioSource m_firedBulletSFXRef;
-    //private BulletScript m_bulletScript;
+
+    [SerializeField]
+    private GameObject m_baseRef, m_catRef, m_explosionRef;
 
     private void Awake()
     {
@@ -42,9 +44,9 @@ public class TurretScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(GameController.m_sInstance && GameController.m_sInstance._IsGameplayStarted())
+        if (GameController.m_sInstance && GameController.m_sInstance._IsGameplayStarted())
         {
-            if(_IsTurretReloaded())
+            if (_IsTurretReloaded())
             {
                 //Set Bullet direction
                 _SetbulletDirection();
@@ -54,10 +56,60 @@ public class TurretScript : MonoBehaviour
                 {
                     _FireBullet();
                 }
-            }        
+            }
+        }
+
+        if (GameController.m_sInstance && GameController.m_sInstance._IsStartedNewGame())
+        {
+            _SetTurretShow(true);
         }
     }
-    
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if(collision.CompareTag("Soldier"))
+        {
+            _PlayExplosion();
+            _PlayDeadAnimation();
+        }
+    }
+
+    private void _PlayDeadAnimation()
+    {
+        GameObject Base = Instantiate<GameObject>(m_baseRef);
+
+        Base.transform.position = transform.position;
+        Base.transform.rotation = transform.rotation;
+        
+        GameObject cat = Instantiate<GameObject>(m_catRef);
+
+        cat.transform.position = transform.position;
+        cat.transform.rotation = transform.rotation;
+
+        Rigidbody2D catRigidbody = cat.GetComponent<Rigidbody2D>();
+
+        Vector2 force;
+        force.x = 0f;
+        force.y = 300f;
+
+        catRigidbody.AddForce(force);
+
+        _SetTurretShow(false);
+    }
+
+    public void _SetTurretShow(bool show)
+    {
+        gameObject.GetComponent<Renderer>().enabled = show;
+        m_turretBullet.GetComponent<Renderer>().enabled = show;
+    }
+
+
+    private void _PlayExplosion()
+    {
+        GameObject explosion = Instantiate<GameObject>(m_explosionRef);
+        explosion.transform.position = transform.position;
+    }
+
     void _SetbulletDirection()
     {
             // Get direction for bullet from mouse position

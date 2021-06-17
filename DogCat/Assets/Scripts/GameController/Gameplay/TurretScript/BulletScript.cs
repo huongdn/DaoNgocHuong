@@ -5,6 +5,7 @@ using UnityEngine;
 public class BulletScript : MonoBehaviour
 {
     GameObject m_particleSystem;
+
     private void Start()
     {
         m_particleSystem = GameObject.FindGameObjectsWithTag("BulletParticalSystem")[0];
@@ -20,18 +21,6 @@ public class BulletScript : MonoBehaviour
             Destroy(gameObject);
         }
     }
-
-    //private void Update()
-    //{
-    //    // Destroy remain Bullet when new game start
-    //    if (GameController.m_sInstance)
-    //    {
-    //        if (GameController.m_sInstance._IsStartedNewGame())
-    //        {
-    //            Destroy(gameObject);
-    //        }
-    //    }
-    //}
 
     public void _DisableParticalSystem()
     {

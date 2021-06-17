@@ -115,7 +115,9 @@ public class HelicopterScript : MonoBehaviour
     {
         if(!m_bIsSoldierDropped)
         {
-            Instantiate(m_SoldierRef, transform.position, Quaternion.identity);
+            GameObject soldier =  Instantiate(m_SoldierRef, transform.position, Quaternion.identity);
+            soldier.transform.rotation = transform.rotation;
+
             m_bIsSoldierDropped = true;
         }
     }
