@@ -25,7 +25,7 @@ public class HelicopterScript : MonoBehaviour, IPooledObject
 
     ObjectPooler objectPooler;
 
-    string helicopterPoolTag, explosionPoolTag/*, helicopterFragmentTag*/;
+    string helicopterPoolTag, explosionPoolTag, soldierPoolTag/*, helicopterFragmentTag*/;
 
     // Start is called before the first frame update
     void Start()
@@ -41,6 +41,7 @@ public class HelicopterScript : MonoBehaviour, IPooledObject
 
         helicopterPoolTag = "Helicopter";
         explosionPoolTag = "Explosion";
+        soldierPoolTag = "Soldier";
         //helicopterFragmentTag = "HelicopterExplosion";
 
         m_bIsSoldierDropped = false;
@@ -151,7 +152,9 @@ public class HelicopterScript : MonoBehaviour, IPooledObject
     {
         if(!m_bIsSoldierDropped)
         {
-            GameObject soldier =  Instantiate(m_SoldierRef, transform.position, Quaternion.identity);
+            //GameObject soldier =  Instantiate(m_SoldierRef, transform.position, Quaternion.identity);
+            GameObject soldier = objectPooler._SpawnFromPool(soldierPoolTag);
+            soldier.transform.position = transform.position;
             soldier.transform.rotation = transform.rotation;
 
             m_bIsSoldierDropped = true;

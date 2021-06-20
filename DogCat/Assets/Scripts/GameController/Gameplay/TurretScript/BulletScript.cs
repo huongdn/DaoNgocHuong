@@ -29,7 +29,6 @@ public class BulletScript : MonoBehaviour, IPooledObject
 
     private void _ReturnToPool()
     {
-        //yield return new WaitForSeconds(1.0f);
         objectPooler._ReturnObjectToPool(gameObject, bulletPoolTag);
     }
 

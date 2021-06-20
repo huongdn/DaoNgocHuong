@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SoldierScript : MonoBehaviour
+public class SoldierScript : MonoBehaviour, IPooledObject
 {
     [SerializeField]
     private float m_fLandingSpeed;
@@ -27,8 +27,29 @@ public class SoldierScript : MonoBehaviour
 
     public AudioSource m_SoldiderDeadSFXRef;
 
+    ObjectPooler objectPooler;
+
+    string soldierPoolTag;
+
     void Start()
     {
+        //m_SoldierAnimator = GetComponent<Animator>();
+        //_AnimatorSetIsLanded(false);
+
+        //m_bIsHitted = false;
+        //m_bIsLanded = false;
+        //m_bIsReachedBase = false;
+
+        //m_SoldiderDeadSFXRef = GetComponent<AudioSource>();
+    }
+
+
+    public void _OnObjectSpawn()
+    {
+        gameObject.SetActive(true);
+        objectPooler = ObjectPooler.m_sInstance;
+        soldierPoolTag = "Soldier";
+
         m_SoldierAnimator = GetComponent<Animator>();
         _AnimatorSetIsLanded(false);
 
@@ -37,6 +58,13 @@ public class SoldierScript : MonoBehaviour
         m_bIsReachedBase = false;
 
         m_SoldiderDeadSFXRef = GetComponent<AudioSource>();
+
+        gameObject.GetComponent<Renderer>().enabled = true;
+    }
+
+    public void _OnObjectReturn()
+    {
+
     }
 
     // Update is called once per frame
@@ -119,7 +147,14 @@ public class SoldierScript : MonoBehaviour
         gameObject.GetComponent<Renderer>().enabled = false;
 
         // Destroy after played sound
-        Destroy(gameObject, m_SoldiderDeadSFXRef.clip.length);
+        StartCoroutine( _ReturnToPool());
+    }
+
+    IEnumerator _ReturnToPool()
+    {
+        //Destroy(gameObject, m_SoldiderDeadSFXRef.clip.length);
+        yield return new WaitForSeconds(m_SoldiderDeadSFXRef.clip.length);
+        objectPooler._ReturnObjectToPool(gameObject, soldierPoolTag);
     }
 
     void _SoldierLanding()

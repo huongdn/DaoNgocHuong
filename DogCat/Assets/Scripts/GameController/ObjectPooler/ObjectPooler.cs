@@ -106,5 +106,5 @@ public class ObjectPooler : MonoBehaviour
         }
 
         poolDictionary[tag].Enqueue(gameObject);
-    }    
+    }
 }
