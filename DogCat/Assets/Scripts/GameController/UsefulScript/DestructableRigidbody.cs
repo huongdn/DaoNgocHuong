@@ -23,8 +23,11 @@ public class DestructableRigidbody : MonoBehaviour
         m_vForceDirection.y = randDirectionY;
 
         rigidbody2D = GetComponent<Rigidbody2D>();
-        rigidbody2D.AddForce(m_vForceDirection);
-        rigidbody2D.AddTorque(randTorque);
+        if(rigidbody2D)
+        {
+            rigidbody2D.AddForce(m_vForceDirection);
+            rigidbody2D.AddTorque(randTorque);
+        }
 
         Invoke("_DestroySelft", Random.Range(2.5f, 4f));
     }

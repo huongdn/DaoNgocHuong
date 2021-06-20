@@ -14,9 +14,20 @@ public class HelicopterController : MonoBehaviour
 
     private bool m_canNextHelicopterSpawned;
 
+    ObjectPooler objectPooler;
+
+    string helicopterPoolTag;
+
     // Start is called before the first frame update
     void Start()
     {
+        if(ObjectPooler.m_sInstance)
+        {
+            objectPooler = ObjectPooler.m_sInstance;
+        }
+
+        helicopterPoolTag = "Helicopter";
+
         m_canNextHelicopterSpawned = false;
         m_nextSpawnTime = 0f;
     }
@@ -53,17 +64,34 @@ public class HelicopterController : MonoBehaviour
                     leftPos.y -= Random.Range(0.5f, 1.5f);
 
                     //Debug.Log("leftPos.y:" + leftPos.y);
-                    Instantiate(m_HelicopterRef, leftPos, leftIdentity);
+
+                    //Instantiate(m_HelicopterRef, leftPos, leftIdentity);
+                    _SpawnFromPool(leftIdentity, leftPos);
                 }
                 else
                 {
                     //Spawn right side helicopter
                     rightPos.y -= Random.Range(0.5f, 1.5f);
                     //Debug.Log("rightPos.y:" + rightPos.y);
-                    Instantiate(m_HelicopterRef, rightPos, rightIdentity);
+
+                    //Instantiate(m_HelicopterRef, rightPos, rightIdentity);
+                    //GameObject helicopter = objectPooler._SpawnFromPool(helicopterTag);
+                    //helicopter.transform.position = rightPos;
+                    //helicopter.transform.rotation = rightIdentity;
+                    //helicopter.SetActive(true);
+
+                    _SpawnFromPool(rightIdentity, rightPos);
                 }
             }
         }
+    }
+
+    private void _SpawnFromPool(Quaternion dentity, Vector2 Pos)
+    {
+        GameObject helicopter = objectPooler._SpawnFromPool(helicopterPoolTag);
+        helicopter.transform.position = Pos;
+        helicopter.transform.rotation = dentity;
+        helicopter.SetActive(true);
     }
 
     bool _CanNextHelicopterSpawn()

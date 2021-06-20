@@ -27,6 +27,19 @@ public class GameController : MonoBehaviour
         _StartNewgame();
     }
 
+    private void _MakeInstance()
+    {
+        if (m_sInstance == null)
+        {
+            m_sInstance = this;
+            //DontDestroyOnLoad(this);
+        }
+        else if (m_sInstance != null)
+        {
+            Destroy(this);
+        }
+    }
+
     public void _StartGameplay()
     {
         m_bGameplayState = 1;
@@ -79,24 +92,6 @@ public class GameController : MonoBehaviour
      public bool _IsStartMenu()
     {
         return m_bGameplayState == 0;
-    }
-
-
-    private void Start()
-    {
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-    }    
-
-    void _MakeInstance()
-    {
-        if (m_sInstance == null)
-        {
-            m_sInstance = this;
-        }
     }
 
     public float _GetWorldWidth()

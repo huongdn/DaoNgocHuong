@@ -455,6 +455,62 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 181567878}
   m_CullTransparentMesh: 1
+--- !u!1 &285379102
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 285379103}
+  - component: {fileID: 285379104}
+  m_Layer: 0
+  m_Name: ObjectPooler
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &285379103
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 285379102}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1179470461}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &285379104
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 285379102}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 85d1d3af3699e2f409f5ec9274c735b0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pools:
+  - tag: Bullet
+    prefabs: {fileID: 4773752576920201090, guid: 3effe91dabee5aa43b916bc4cecd393a, type: 3}
+  - tag: Helicopter
+    prefabs: {fileID: 3083460295184996842, guid: 3d1aa1df260cba743881ac1dfb9dc376, type: 3}
+  - tag: HelicopterExplosion
+    prefabs: {fileID: 8155176716681240525, guid: 07a306ed99adc7f4db3327953aff9325, type: 3}
+  - tag: Soldier
+    prefabs: {fileID: 3702772580672901212, guid: 7a5e0b18f647e584d90f64fd8b998c6d, type: 3}
+  - tag: DeadSoldier
+    prefabs: {fileID: 3702772580672901212, guid: a4c44843a4326a54f9010871bcdd6dde, type: 3}
+  - tag: Explosion
+    prefabs: {fileID: 2900208249733869705, guid: 1a1582952b850134a90af89a3923628e, type: 3}
 --- !u!1 &333180828
 GameObject:
   m_ObjectHideFlags: 0
@@ -1098,6 +1154,7 @@ Transform:
   m_Children:
   - {fileID: 1165737663}
   - {fileID: 1795473544}
+  - {fileID: 285379103}
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

@@ -31,11 +31,16 @@ public class UIController : MonoBehaviour
         m_sInstance._HideEndGameUI();
     }
 
-    void _MakeInstance()
+    private void _MakeInstance()
     {
         if (m_sInstance == null)
         {
             m_sInstance = this;
+            //DontDestroyOnLoad(this);
+        }
+        else if (m_sInstance != null)
+        {
+            Destroy(this);
         }
     }
     public void _ShowEndGameUI()

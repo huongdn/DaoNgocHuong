@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HelicopterScript : MonoBehaviour
+public class HelicopterScript : MonoBehaviour, IPooledObject
 {
     [SerializeField]
     private GameObject m_SoldierRef;
@@ -22,16 +22,36 @@ public class HelicopterScript : MonoBehaviour
     private AudioSource m_HelicopterHittedSFXRef;
 
     private float m_fDropPos;
+
+    ObjectPooler objectPooler;
+
+    string helicopterPoolTag, explosionPoolTag/*, helicopterFragmentTag*/;
+
     // Start is called before the first frame update
     void Start()
     {
+    }
+
+    public void _OnObjectSpawn()
+    {
+        if (ObjectPooler.m_sInstance)
+        {
+            objectPooler = ObjectPooler.m_sInstance;
+        }
+
+        helicopterPoolTag = "Helicopter";
+        explosionPoolTag = "Explosion";
+        //helicopterFragmentTag = "HelicopterExplosion";
+
         m_bIsSoldierDropped = false;
-        if(GameController.m_sInstance)
+        if (GameController.m_sInstance)
         {
             m_fDropPos = Random.Range(-GameController.m_sInstance._GetWorldWidth() * 0.9f, GameController.m_sInstance._GetWorldWidth() * 0.9f);
         }
 
         m_HelicopterHittedSFXRef = GetComponent<AudioSource>();
+
+        gameObject.GetComponent<Renderer>().enabled = true;
     }
 
     // Update is called once per frame
@@ -95,8 +115,10 @@ public class HelicopterScript : MonoBehaviour
     void _ExplodeHelicopter()
     {
         GameObject helicopterFragments = Instantiate<GameObject>(m_HelicopterExplosionRef);
+        //GameObject helicopterFragments = objectPooler._SpawnFromPool(helicopterFragmentTag);
 
-        GameObject explosion = Instantiate<GameObject>(m_ExplosionRef);
+        //GameObject explosion = Instantiate<GameObject>(m_ExplosionRef);
+        GameObject explosion = objectPooler._SpawnFromPool(explosionPoolTag);
 
         //Map the helicopterFragment to the Helicopter
         helicopterFragments.transform.position = transform.position;
@@ -104,11 +126,25 @@ public class HelicopterScript : MonoBehaviour
 
         //Map the explosion to the Helicopter
         explosion.transform.position = transform.position;
+        //Animator animator = explosion.GetComponent<Animator>();
+        
+        //animator.SetTrigger("Explosion");
 
         // Hide Helicopter for finshing play sound
         gameObject.GetComponent<Renderer>().enabled = false;
         // Destroy  Helicopter after finshed play sound
-        Destroy(gameObject, m_HelicopterHittedSFXRef.clip.length);
+
+        //Invoke( "_ReturnToPool", m_HelicopterHittedSFXRef.clip.length);
+        StartCoroutine(_ReturnToPool(/*explosion, helicopterFragments*/));
+    }
+
+    IEnumerator _ReturnToPool(/*GameObject explosion, GameObject helicopterFragments*/)
+    {
+        yield return new WaitForSeconds(m_HelicopterHittedSFXRef.clip.length);
+        //explosion._OnObjectHide();
+        //objectPooler._ReturnObjectToPool(explosion, explosionPoolTag);
+        objectPooler._ReturnObjectToPool(gameObject, helicopterPoolTag);
+        //objectPooler._ReturnObjectToPool(helicopterFragments, helicopterFragmentTag);
     }
 
     void _DropSoldier()
@@ -120,5 +156,10 @@ public class HelicopterScript : MonoBehaviour
 
             m_bIsSoldierDropped = true;
         }
+    }
+
+    public void _OnObjectReturn()
+    {
+        gameObject.GetComponent<Renderer>().enabled = true;
     }
 }

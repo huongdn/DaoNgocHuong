@@ -136,6 +136,7 @@ public class TurretScript : MonoBehaviour
         //FiredBullet.GetComponent<BulletScript>()._EnableParticalSystem();
 
         m_firedBulletSFXRef.PlayOneShot(m_firedBulletSFXRef.clip, 1f);
+
         m_turretBullet.SetActive(false);
     }
     

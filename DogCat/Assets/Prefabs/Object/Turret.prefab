@@ -101,7 +101,7 @@ MonoBehaviour:
   m_fFireRate: 0.5
   m_baseRef: {fileID: 6066939726493159899, guid: 07f0b30b2e6c01b4f95b77d234b82dda, type: 3}
   m_catRef: {fileID: 3503569769722004319, guid: 661a20836d7822c4d93098f709005923, type: 3}
-  m_explosion: {fileID: 2900208249733869705, guid: 1a1582952b850134a90af89a3923628e, type: 3}
+  m_explosionRef: {fileID: 2900208249733869705, guid: 1a1582952b850134a90af89a3923628e, type: 3}
 --- !u!70 &948057362726723777
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
