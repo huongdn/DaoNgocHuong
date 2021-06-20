@@ -1,10 +1,14 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BulletScript : MonoBehaviour
+public class BulletScript : MonoBehaviour, IPooledObject
 {
     GameObject m_particleSystem;
+
+    ObjectPooler objectPooler;
+    private string bulletPoolTag;
 
     private void Start()
     {
@@ -18,8 +22,15 @@ public class BulletScript : MonoBehaviour
     {
         if (collision.CompareTag("SideEdge") || collision.CompareTag("Helicopter"))
         {
-            Destroy(gameObject);
+            //Destroy(gameObject);
+            _ReturnToPool();
         }
+    }
+
+    private void _ReturnToPool()
+    {
+        //yield return new WaitForSeconds(1.0f);
+        objectPooler._ReturnObjectToPool(gameObject, bulletPoolTag);
     }
 
     public void _DisableParticalSystem()
@@ -36,4 +47,20 @@ public class BulletScript : MonoBehaviour
                 m_particleSystem.SetActive(true);
             }
         }
+
+    public void _OnObjectSpawn()
+    {
+        gameObject.SetActive(true);
+        objectPooler = ObjectPooler.m_sInstance;
+        bulletPoolTag = "Bullet";
+
+        _EnableParticalSystem();
+
+        //StartCoroutine(_ReturnToPool());
+    }
+
+    public void _OnObjectReturn()
+    {
+
+    }
 }

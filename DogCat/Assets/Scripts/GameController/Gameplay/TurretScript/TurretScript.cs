@@ -24,6 +24,9 @@ public class TurretScript : MonoBehaviour
     [SerializeField]
     private GameObject m_baseRef, m_catRef, m_explosionRef;
 
+    ObjectPooler objectPooler;
+    string bulletPoolTag;
+
     private void Awake()
     {
         m_defaultBulletTranform = m_defaultBulletRef.transform;
@@ -39,6 +42,11 @@ public class TurretScript : MonoBehaviour
         m_turretBullet = gameObject1;
 
         m_firedBulletSFXRef = GetComponent<AudioSource>();
+
+        gameObject.SetActive(true);
+        objectPooler = ObjectPooler.m_sInstance;
+        bulletPoolTag = "Bullet";
+        //StartCoroutine(_ReturnToPool());
     }
 
     // Update is called once per frame
@@ -130,9 +138,16 @@ public class TurretScript : MonoBehaviour
     void _FireBullet()
     {
         m_fNextFireTime = Time.time + m_fFireRate;
-        GameObject FiredBullet = Instantiate(m_defaultBulletRef, m_turretBullet.transform.position, m_turretBullet.transform.rotation);
+
+        //GameObject FiredBullet = Instantiate(m_defaultBulletRef, m_turretBullet.transform.position, m_turretBullet.transform.rotation);
+        GameObject FiredBullet = objectPooler._SpawnFromPool(bulletPoolTag);
+
+        FiredBullet.transform.position = m_turretBullet.transform.position;
+        FiredBullet.transform.rotation = m_turretBullet.transform.rotation;
+
         FiredBullet.GetComponent<Rigidbody2D>().velocity = FiredBullet.transform.up * 10f;
         FiredBullet.tag = "FiredBullet";
+
         //FiredBullet.GetComponent<BulletScript>()._EnableParticalSystem();
 
         m_firedBulletSFXRef.PlayOneShot(m_firedBulletSFXRef.clip, 1f);
