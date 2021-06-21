@@ -511,6 +511,10 @@ MonoBehaviour:
     prefabs: {fileID: 3702772580672901212, guid: a4c44843a4326a54f9010871bcdd6dde, type: 3}
   - tag: Explosion
     prefabs: {fileID: 2900208249733869705, guid: 1a1582952b850134a90af89a3923628e, type: 3}
+  - tag: Base
+    prefabs: {fileID: 6066939726493159899, guid: 07f0b30b2e6c01b4f95b77d234b82dda, type: 3}
+  - tag: Cat
+    prefabs: {fileID: 3503569769722004319, guid: 661a20836d7822c4d93098f709005923, type: 3}
 --- !u!1 &333180828
 GameObject:
   m_ObjectHideFlags: 0

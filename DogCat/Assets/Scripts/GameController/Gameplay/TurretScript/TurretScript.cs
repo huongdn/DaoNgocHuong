@@ -25,7 +25,9 @@ public class TurretScript : MonoBehaviour
     private GameObject m_baseRef, m_catRef, m_explosionRef;
 
     ObjectPooler objectPooler;
-    string bulletPoolTag;
+    string bulletPoolTag, basePoolTag, catPoolTag, explosionPoolTag;
+
+    GameObject Base, Cat;
 
     private void Awake()
     {
@@ -46,6 +48,9 @@ public class TurretScript : MonoBehaviour
         gameObject.SetActive(true);
         objectPooler = ObjectPooler.m_sInstance;
         bulletPoolTag = "Bullet";
+        basePoolTag = "Base";
+        catPoolTag = "Cat";
+        explosionPoolTag = "Explosion";
         //StartCoroutine(_ReturnToPool());
     }
 
@@ -67,10 +72,17 @@ public class TurretScript : MonoBehaviour
             }
         }
 
-        if (GameController.m_sInstance && GameController.m_sInstance._IsStartedNewGame())
+        if (GameController.m_sInstance && GameController.m_sInstance._IsGameplayStarted())
         {
             _SetTurretShow(true);
+            _ReTurnBaseCatToPool();
         }
+    }
+
+    private void _ReTurnBaseCatToPool()
+    {
+        objectPooler._ReturnObjectToPool(Base, basePoolTag); 
+        objectPooler._ReturnObjectToPool(Cat, catPoolTag);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -84,17 +96,19 @@ public class TurretScript : MonoBehaviour
 
     private void _PlayDeadAnimation()
     {
-        GameObject Base = Instantiate<GameObject>(m_baseRef);
+        //GameObject Base = Instantiate<GameObject>(m_baseRef);
+        Base = objectPooler._SpawnFromPool(basePoolTag);
 
         Base.transform.position = transform.position;
         Base.transform.rotation = transform.rotation;
         
-        GameObject cat = Instantiate<GameObject>(m_catRef);
+        //GameObject cat = Instantiate<GameObject>(m_catRef);
+        Cat = objectPooler._SpawnFromPool(catPoolTag);
 
-        cat.transform.position = transform.position;
-        cat.transform.rotation = transform.rotation;
+        Cat.transform.position = transform.position;
+        Cat.transform.rotation = transform.rotation;
 
-        Rigidbody2D catRigidbody = cat.GetComponent<Rigidbody2D>();
+        Rigidbody2D catRigidbody = Cat.GetComponent<Rigidbody2D>();
 
         Vector2 force;
         force.x = 0f;
@@ -114,7 +128,8 @@ public class TurretScript : MonoBehaviour
 
     private void _PlayExplosion()
     {
-        GameObject explosion = Instantiate<GameObject>(m_explosionRef);
+        //GameObject explosion = Instantiate<GameObject>(m_explosionRef);
+        GameObject explosion = objectPooler._SpawnFromPool(explosionPoolTag);
         explosion.transform.position = transform.position;
     }
 

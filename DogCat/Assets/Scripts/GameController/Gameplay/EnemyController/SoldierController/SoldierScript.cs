@@ -69,8 +69,7 @@ public class SoldierScript : MonoBehaviour, IPooledObject
 
     // Update is called once per frame
     void Update()
-    {
-  
+    {  
         // Soldier landing
         if (!_IsHitted() && !_IsLanded() && !_IsReachedBase())
         {
@@ -90,7 +89,15 @@ public class SoldierScript : MonoBehaviour, IPooledObject
         
         if(_IsReachedBase())
         {
-            
+            _AnimatorSetIsReachedBase(true);
+        }
+
+        if(GameController.m_sInstance )
+        {
+            if (GameController.m_sInstance._IsEndGameMenu())
+            {
+                _ReturnToPool();
+            }
         }
     }
 
@@ -129,6 +136,14 @@ public class SoldierScript : MonoBehaviour, IPooledObject
             m_SoldierAnimator.SetBool("IsLanded", isLanded);
         }
     }
+    
+    private void _AnimatorSetIsReachedBase(bool isReachedBase)
+    {
+        if(m_SoldierAnimator)
+        {
+            m_SoldierAnimator.SetBool("IsReachedBase", isReachedBase);
+        }
+    }
 
     private void _DestroySoldier()
     {
@@ -147,13 +162,19 @@ public class SoldierScript : MonoBehaviour, IPooledObject
         gameObject.GetComponent<Renderer>().enabled = false;
 
         // Destroy after played sound
-        StartCoroutine( _ReturnToPool());
+        StartCoroutine( _IReturnToPool());
     }
 
-    IEnumerator _ReturnToPool()
+    IEnumerator _IReturnToPool()
     {
         //Destroy(gameObject, m_SoldiderDeadSFXRef.clip.length);
         yield return new WaitForSeconds(m_SoldiderDeadSFXRef.clip.length);
+        _ReturnToPool();
+    }
+    private void _ReturnToPool()
+    {
+        //Destroy(gameObject, m_SoldiderDeadSFXRef.clip.length);
+        //yield return new WaitForSeconds(m_SoldiderDeadSFXRef.clip.length);
         objectPooler._ReturnObjectToPool(gameObject, soldierPoolTag);
     }
 
@@ -208,7 +229,9 @@ public class SoldierScript : MonoBehaviour, IPooledObject
             {
                 m_bIsReachedBase = true;
 
-                _DestroySoldier();
+                //_DestroySoldier();
+                //StartCoroutine(_ReturnToPool());
+                _ReturnToPool();
 
                 if (GameController.m_sInstance)
                 {

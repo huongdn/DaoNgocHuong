@@ -104,10 +104,15 @@ public class UIController : MonoBehaviour
     public void _OnButtonReplayClick()
     {
         m_sInstance._HideEndGameUI();
-        m_sInstance._ShowStartGameUI();
+        //m_sInstance._ShowStartGameUI();
         //if (GameController.m_sInstance)
         //{
         //    GameController.m_sInstance._StartNewgame();
         //}
+
+        if (GameController.m_sInstance)
+        {
+            GameController.m_sInstance._StartGameplay();
+        }
     }
 }

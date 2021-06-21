@@ -58,12 +58,12 @@ public class ObjectPooler : MonoBehaviour
 
     public GameObject _SpawnFromPool (string tag/*, Vector3 position, Quaternion rotation*/)
     {
-        if(!poolDictionary.ContainsKey(tag))
+
+        if (!_IsValidTag(tag))
         {
-            Debug.LogWarning("Pool with Tag " + tag + " doesn't exist !!");
+            Debug.LogWarning("_SpawnFromPool not valid tag: " + tag);
             return null;
         }
-
         GameObject objectToSpawn = null;
 
         if (poolDictionary[tag].Count > 0)
@@ -97,14 +97,30 @@ public class ObjectPooler : MonoBehaviour
 
     public void _ReturnObjectToPool(GameObject gameObject, string tag)
     {
-        gameObject.SetActive(false);
-
-        IPooledObject returnedObject = gameObject.GetComponent<IPooledObject>();
-        if (returnedObject != null)
+        if(gameObject != null)
         {
-            returnedObject._OnObjectReturn();
-        }
+            gameObject.SetActive(false);
 
-        poolDictionary[tag].Enqueue(gameObject);
+            IPooledObject returnedObject = gameObject.GetComponent<IPooledObject>();
+            if (returnedObject != null)
+            {
+                returnedObject._OnObjectReturn();
+            }
+
+            if(_IsValidTag(tag))
+            {
+                poolDictionary[tag].Enqueue(gameObject);
+            }
+        }
+    }
+
+    private bool _IsValidTag(string tag)
+    {
+        if (!poolDictionary.ContainsKey(tag))
+        {
+            Debug.LogWarning("Pool with Tag " + tag + " doesn't exist !!");
+            return false;
+        }
+        return true;
     }
 }
